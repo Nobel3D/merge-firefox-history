@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#Luca "Nobel3D" Gasperini
+
+#HOW TO WORK
+
+# make this script executable
+# $user> ./merge-firefox-history maindb.sqlite source.sqlite
+# all data from source.sqlite will add to maindb.sqlite 
+
+
+sqlite3 $1 << EOF
+attach "$2" as db2;
+
+insert or ignore into moz_places(url,title,rev_host,visit_count,hidden,typed,favicon_id,frecency,last_visit_date,guid,foreign_count) select url,title,rev_host,visit_count,hidden,typed,favicon_id,frecency,last_visit_date,guid,foreign_count from db2.moz_places;
+
+EOF
